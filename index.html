@@ -127,7 +127,7 @@ footer{text-align:center;font-size:11px;color:var(--sub);padding:4px 20px 24px}
 <h3>4. 非公式アプリです</h3>
 <p>本アプリは個人が作成した非公式のツールであり、日産自動車株式会社およびその関連会社とは一切関係ありません。「アリア」「ARIYA」は同社の商標または登録商標です。</p>
 <h3>5. 個人情報</h3>
-<p>入力された値は端末内での計算にのみ使われ、外部へ送信・保存されません。</p>
+<p>入力された値は端末内での計算にのみ使われ、外部へ送信・保存されません。ただし、アクセス数の把握のため、アクセス解析サービス「GoatCounter」を利用しています。Cookieは使用せず、個人を特定しない匿名の閲覧情報(閲覧ページ、おおまかな端末・ブラウザの種類、参照元など)のみが集計されます。</p>
 <h3>6. 規約の変更・サービスの停止</h3>
 <p>本規約および本アプリの内容は、予告なく変更・停止することがあります。本アプリをご利用になった時点で、本規約に同意したものとみなします。</p>
 </details>
@@ -187,5 +187,7 @@ $('start').addEventListener('input',()=>{touched=true;});
 ['soc','target','cap','ch','start','hh','mm'].forEach(i=>$(i).addEventListener('input',update));
 update();
 </script>
+<script data-goatcounter="https://ariyacharge.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
