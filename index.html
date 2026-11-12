@@ -3,49 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>アリア B6 充電時間計算</title>
+<meta name="apple-mobile-web-app-title" content="アリア充電時間計算表">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>アリア充電時間計算表</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⚡%3C/text%3E%3C/svg%3E">
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--text:#1a2330;--sub:#667085;--accent:#0a7cff;--bar:#e3e8ee;--ok:#16a34a;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1319;--card:#18202a;--text:#e8edf3;--sub:#93a0b0;--accent:#4da3ff;--bar:#2a3441;--ok:#4ade80}}
-:root[data-theme="dark"]{--bg:#0e1319;--card:#18202a;--text:#e8edf3;--sub:#93a0b0;--accent:#4da3ff;--bar:#2a3441;--ok:#4ade80}
+:root{--bg:#eef2f7;--card:#fff;--text:#16202e;--sub:#6b778a;--line:#e6ebf2;--a1:#2563eb;--a2:#06b6d4;--soft:#eaf2ff;
+--shadow:0 6px 24px rgba(30,60,120,.08);box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1017;--card:#151d28;--text:#e9eef5;--sub:#8f9db0;--line:#243040;--soft:#1a2740;--shadow:none}}
+:root[data-theme="dark"]{--bg:#0b1017;--card:#151d28;--text:#e9eef5;--sub:#8f9db0;--line:#243040;--soft:#1a2740;--shadow:none}
+*{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.5}
-main{max-width:480px;margin:0 auto;padding:16px}
-h1{font-size:20px;margin:8px 0 16px}
-.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px}
-label{display:block;font-size:13px;color:var(--sub);margin-bottom:6px}
-.big{font-size:40px;font-weight:700;color:var(--accent)}
-input[type=range]{width:100%;accent-color:var(--accent)}
-select,input[type=number]{width:100%;font-size:16px;padding:10px;border-radius:10px;border:1px solid var(--bar);background:var(--bg);color:var(--text);box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.6}
+header{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;padding:calc(env(safe-area-inset-top,0px) + 28px) 20px 64px;text-align:center}
+header .logo{font-size:34px}
+header h1{margin:4px 0 2px;font-size:22px;letter-spacing:.04em}
+header p{margin:0;font-size:12px;opacity:.85}
+main{max-width:480px;margin:-44px auto 0;padding:0 14px 24px}
+.card{background:var(--card);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.ttl{font-size:12px;font-weight:700;color:var(--sub);letter-spacing:.08em;margin-bottom:10px}
+label{display:block;font-size:12px;color:var(--sub);margin-bottom:6px}
+.big{font-size:48px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.big small{font-size:22px}
+input[type=range]{width:100%;margin:14px 0 4px;accent-color:var(--a1)}
+.gauge{position:relative;height:22px;border-radius:11px;background:var(--line);overflow:hidden}
+.gauge .goal{position:absolute;inset:0 auto 0 0;background:var(--soft);border-right:3px solid var(--a2)}
+.gauge .cur{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:11px}
+.gl{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:6px}
+select,input[type=number],input[type=time]{width:100%;font-size:16px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-family:inherit}
 .row{display:flex;gap:10px}.row>div{flex:1}
-.bar{height:14px;background:var(--bar);border-radius:7px;overflow:hidden;position:relative;margin-top:8px}
-.fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);opacity:.35}
-.now{position:absolute;top:0;bottom:0;background:var(--accent)}
+.gap{height:12px}
 .res{text-align:center}
-.res .t{font-size:44px;font-weight:700}
-.kv{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--bar);font-size:15px}
+.res .t{font-size:42px;font-weight:800;margin:2px 0}
+.res .note{font-size:13px;color:var(--sub)}
+.chip{display:inline-block;margin-top:8px;padding:6px 14px;border-radius:99px;background:var(--soft);color:var(--a1);font-weight:700;font-size:14px}
+.kv{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
 .kv:first-of-type{border-top:0}
-.note{font-size:12px;color:var(--sub)}
+.kv span{color:var(--sub)}
+.small{font-size:12px;color:var(--sub)}
+details{font-size:13px;color:var(--sub)}
+summary{cursor:pointer;font-weight:700;color:var(--text);font-size:14px}
+details h3{font-size:13px;margin:14px 0 2px;color:var(--text)}
+details p{margin:0}
+footer{text-align:center;font-size:11px;color:var(--sub);padding:4px 20px 20px}
 </style>
 </head>
 <body>
+<header>
+<div class="logo">⚡</div>
+<h1>アリア充電時間計算表</h1>
+<p>NISSAN ARIYA B6 の充電時間をかんたん計算</p>
+</header>
 <main>
-<h1>⚡ アリア B6 充電時間計算</h1>
 
 <div class="card">
-<label>現在の電池残量</label>
-<div class="big"><span id="socv">30</span>%</div>
+<div class="ttl">現在の電池残量</div>
+<div class="big"><span id="socv">30</span><small>%</small></div>
 <input type="range" id="soc" min="0" max="99" value="30">
-<div class="bar"><div class="fill" id="fill"></div><div class="now" id="now"></div></div>
+<div class="gauge"><div class="goal" id="fill"></div><div class="cur" id="now"></div></div>
+<div class="gl"><span>0%</span><span id="gt">目標 80%</span><span>100%</span></div>
 </div>
 
 <div class="card">
+<div class="ttl">充電の設定</div>
 <div class="row">
-<div><label>目標 (%)</label><input type="number" id="target" value="80" min="1" max="100"></div>
-<div><label>電池容量 (kWh)</label><input type="number" id="cap" value="66" min="10" max="150" step="1"></div>
+<div><label>目標 (%)</label><input type="number" id="target" value="80" min="1" max="100" inputmode="numeric"></div>
+<div><label>電池容量 (kWh)</label><input type="number" id="cap" value="66" min="10" max="150" inputmode="decimal"></div>
 </div>
-<div style="height:10px"></div>
+<div class="gap"></div>
 <label>充電器</label>
 <select id="ch">
 <option value="ac,3">普通充電 3kW (200V)</option>
@@ -54,24 +79,24 @@ select,input[type=number]{width:100%;font-size:16px;padding:10px;border-radius:1
 <option value="dc,90">急速充電 90kW</option>
 <option value="dc,150">急速充電 150kW (車両上限130kW)</option>
 </select>
-<div style="height:10px"></div>
+<div class="gap"></div>
 <label>充電開始時刻(初期値は現在時刻)</label>
 <input type="time" id="start">
 </div>
 
 <div class="card res">
-<div class="note">目標まで</div>
+<div class="ttl">目標までの充電時間</div>
 <div class="t" id="time">--</div>
-<div class="note" id="fin"></div>
+<div class="chip" id="fin"></div>
 </div>
 
 <div class="card">
-<label>充電する時間を入れると、到達する残量がわかります</label>
+<div class="ttl">充電する時間から逆算</div>
 <div class="row">
-<div><label>時間</label><input type="number" id="hh" value="1" min="0" max="48"></div>
-<div><label>分</label><input type="number" id="mm" value="0" min="0" max="59"></div>
+<div><label>時間</label><input type="number" id="hh" value="1" min="0" max="48" inputmode="numeric"></div>
+<div><label>分</label><input type="number" id="mm" value="0" min="0" max="59" inputmode="numeric"></div>
 </div>
-<div class="res" style="margin-top:10px">
+<div class="res" style="margin-top:12px">
 <div class="note">この時間で充電すると</div>
 <div class="t" id="reach">--</div>
 <div class="note" id="added"></div>
@@ -79,66 +104,81 @@ select,input[type=number]{width:100%;font-size:16px;padding:10px;border-radius:1
 </div>
 
 <div class="card">
+<div class="ttl">充電の詳細</div>
 <div class="kv"><span>充電する電力量</span><b id="kwh">--</b></div>
 <div class="kv"><span>平均充電電力</span><b id="avg">--</b></div>
-<div class="kv"><span>満充電まで (参考)</span><b id="full">--</b></div>
+<div class="kv"><span>満充電まで(参考)</span><b id="full">--</b></div>
+<p class="small" style="margin:10px 0 0">充電効率は普通90%・急速95%、急速は50%以降に出力が下がる想定の目安です。</p>
 </div>
 
-<p class="note">※ 目安の計算です。充電効率は普通90%・急速95%、急速は50%以降に出力が徐々に下がる想定です。気温・電池温度・充電器の状態で実際は変わります。電池容量は実際の値に合わせて調整してください。</p>
+<div class="card">
+<details>
+<summary>利用規約・免責事項</summary>
+<h3>1. 個人利用に限ります</h3>
+<p>本アプリは個人的・非営利の目的でのみご利用いただけます。営利目的での利用、第三者への有償提供、無断での再配布・転載はお断りします。</p>
+<h3>2. 計算結果は目安です</h3>
+<p>表示される時間・残量・電力量は簡易的な計算による概算であり、正確性・完全性を保証するものではありません。実際の充電時間は、気温、電池温度、充電器の状態や仕様、車両の設定などにより大きく異なります。</p>
+<h3>3. 免責</h3>
+<p>本アプリの利用または利用できなかったことにより生じたいかなる損害(充電計画の遅れ、電欠、機会損失など)についても、制作者は一切の責任を負いません。重要な判断は、車両の取扱説明書や充電事業者の案内をご確認のうえ、ご自身の責任で行ってください。</p>
+<h3>4. 非公式アプリです</h3>
+<p>本アプリは個人が作成した非公式のツールであり、日産自動車株式会社およびその関連会社とは一切関係ありません。「アリア」「ARIYA」は同社の商標または登録商標です。</p>
+<h3>5. 個人情報</h3>
+<p>入力された値は端末内での計算にのみ使われ、外部へ送信・保存されません。</p>
+<h3>6. 規約の変更・サービスの停止</h3>
+<p>本規約および本アプリの内容は、予告なく変更・停止することがあります。本アプリをご利用になった時点で、本規約に同意したものとみなします。</p>
+</details>
+</div>
 </main>
+<footer>© アリア充電時間計算表(非公式・個人利用向け)</footer>
 
 <script>
 const $=id=>document.getElementById(id);
 const CAR_AC=6, CAR_DC=130;
+let touched=false;
 function curve(s){ if(s<50) return 1; if(s<80) return 1-(s-50)/30*0.55; return 0.45-(s-80)/20*0.3; }
+function pwr(s,type,kw){
+  const eff=type==='ac'?0.90:0.95;
+  const lim=type==='ac'?Math.min(kw,CAR_AC):Math.min(kw,CAR_DC);
+  return type==='ac'?lim*eff:Math.max(lim*curve(s),5)*eff;
+}
 function calc(from,to,cap,type,kw){
-  const eff = type==='ac'?0.90:0.95;
-  const lim = type==='ac'?Math.min(kw,CAR_AC):Math.min(kw,CAR_DC);
   let h=0; const step=0.1;
-  for(let s=from;s<to-1e-9;s+=step){
-    const p = type==='ac'? lim*eff : Math.max(lim*curve(s),5)*eff;
-    h += cap*step/100/p;
-  }
+  for(let s=from;s<to-1e-9;s+=step) h+=cap*step/100/pwr(s,type,kw);
   return h;
 }
 function reachSoc(from,minutes,cap,type,kw){
-  const eff = type==='ac'?0.90:0.95;
-  const lim = type==='ac'?Math.min(kw,CAR_AC):Math.min(kw,CAR_DC);
   let rem=minutes/60, s=from; const step=0.1;
   while(s<100-1e-9 && rem>0){
-    const p = type==='ac'? lim*eff : Math.max(lim*curve(s),5)*eff;
-    const dh = cap*step/100/p;
-    if(dh>rem){ s+=step*rem/dh; rem=0; break; }
+    const dh=cap*step/100/pwr(s,type,kw);
+    if(dh>rem){ s+=step*rem/dh; break; }
     rem-=dh; s+=step;
   }
   return Math.min(s,100);
 }
 function fmt(h){ const m=Math.round(h*60); const hh=Math.floor(m/60), mm=m%60; return hh>0?`${hh}時間${mm}分`:`${mm}分`; }
+const p2=x=>String(x).padStart(2,'0');
 function update(){
-  if(!touched){ const n=new Date(); $('start').value=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'); }
-  const soc=+$('soc').value; let tg=Math.min(100,Math.max(1,+$('target').value||80));
+  if(!touched){ const n=new Date(); $('start').value=p2(n.getHours())+':'+p2(n.getMinutes()); }
+  const soc=+$('soc').value; const tg=Math.min(100,Math.max(1,+$('target').value||80));
   const cap=+$('cap').value||66; const [type,kwS]=$('ch').value.split(','); const kw=+kwS;
-  $('socv').textContent=soc;
-  { const mins=(+$('hh').value||0)*60+(+$('mm').value||0);
-    const r=reachSoc(soc,mins,cap,type,kw);
-    $('reach').textContent=r>=99.95?'100%(満充電)':r.toFixed(1)+'%';
-    $('added').textContent=`+${(r-soc).toFixed(1)}%(約 ${(cap*(r-soc)/100).toFixed(1)} kWh 充電)`; }
-  $('fill').style.width=tg+'%'; $('now').style.width=soc+'%';
-  if(soc>=tg){ $('time').textContent='目標到達済み'; $('fin').textContent=''; $('kwh').textContent='0 kWh'; $('avg').textContent='--'; $('full').textContent=fmt(calc(soc,100,cap,type,kw)); return; }
-  const h=calc(soc,tg,cap,type,kw);
-  const e=cap*(tg-soc)/100;
+  $('socv').textContent=soc; $('gt').textContent='目標 '+tg+'%';
+  $('fill').style.width=tg+'%'; $('now').style.width=Math.max(soc,2)+'%';
+  const mins=(+$('hh').value||0)*60+(+$('mm').value||0);
+  const r=reachSoc(soc,mins,cap,type,kw);
+  $('reach').textContent=r>=99.95?'100%(満充電)':r.toFixed(1)+'%';
+  $('added').textContent=`+${(r-soc).toFixed(1)}%(約 ${(cap*(r-soc)/100).toFixed(1)} kWh 充電)`;
+  $('full').textContent=fmt(calc(soc,100,cap,type,kw));
+  if(soc>=tg){ $('time').textContent='目標到達済み'; $('fin').style.display='none'; $('kwh').textContent='0 kWh'; $('avg').textContent='--'; return; }
+  const h=calc(soc,tg,cap,type,kw), e=cap*(tg-soc)/100;
   $('time').textContent=fmt(h);
   const [sh,sm]=($('start').value||'00:00').split(':').map(Number);
   const st=new Date(); st.setHours(sh,sm,0,0);
   const d=new Date(st.getTime()+h*3600000);
-  const p=x=>String(x).padStart(2,'0');
-  const nextDay=d.getDate()!==st.getDate()?'(翌日)':'';
-  $('fin').textContent=`充電予定 ${p(st.getHours())}:${p(st.getMinutes())} 〜 ${p(d.getHours())}:${p(d.getMinutes())}${nextDay}`;
+  $('fin').style.display='inline-block';
+  $('fin').textContent=`充電予定 ${p2(st.getHours())}:${p2(st.getMinutes())} 〜 ${p2(d.getHours())}:${p2(d.getMinutes())}${d.getDate()!==st.getDate()?'(翌日)':''}`;
   $('kwh').textContent=e.toFixed(1)+' kWh';
   $('avg').textContent=(e/h).toFixed(1)+' kW';
-  $('full').textContent=fmt(calc(soc,100,cap,type,kw));
 }
-let touched=false;
 $('start').addEventListener('input',()=>{touched=true;});
 ['soc','target','cap','ch','start','hh','mm'].forEach(i=>$(i).addEventListener('input',update));
 update();
