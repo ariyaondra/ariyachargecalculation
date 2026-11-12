@@ -8,51 +8,55 @@
 <title>アリア充電時間計算表</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⚡%3C/text%3E%3C/svg%3E">
 <style>
-:root{--bg:#eef2f7;--card:#fff;--text:#16202e;--sub:#6b778a;--line:#e6ebf2;--a1:#2563eb;--a2:#06b6d4;--soft:#eaf2ff;
---shadow:0 6px 24px rgba(30,60,120,.08);box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1017;--card:#151d28;--text:#e9eef5;--sub:#8f9db0;--line:#243040;--soft:#1a2740;--shadow:none}}
-:root[data-theme="dark"]{--bg:#0b1017;--card:#151d28;--text:#e9eef5;--sub:#8f9db0;--line:#243040;--soft:#1a2740;--shadow:none}
+:root{color-scheme:dark;--bg:#05080f;--card:#0c1220;--text:#eaf6ff;--sub:#7d93ad;--line:#1b2a42;--a1:#00e5ff;--a2:#3b82f6;--a3:#a855f7;--soft:rgba(0,229,255,.1);
+box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.6}
-header{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;padding:calc(env(safe-area-inset-top,0px) + 28px) 20px 64px;text-align:center}
-header .logo{font-size:34px}
-header h1{margin:4px 0 2px;font-size:22px;letter-spacing:.04em}
-header p{margin:0;font-size:12px;opacity:.85}
-main{max-width:480px;margin:-44px auto 0;padding:0 14px 24px}
-.card{background:var(--card);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
-.ttl{font-size:12px;font-weight:700;color:var(--sub);letter-spacing:.08em;margin-bottom:10px}
-label{display:block;font-size:12px;color:var(--sub);margin-bottom:6px}
-.big{font-size:48px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.big small{font-size:22px}
-input[type=range]{width:100%;margin:14px 0 4px;accent-color:var(--a1)}
-.gauge{position:relative;height:22px;border-radius:11px;background:var(--line);overflow:hidden}
-.gauge .goal{position:absolute;inset:0 auto 0 0;background:var(--soft);border-right:3px solid var(--a2)}
-.gauge .cur{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:11px}
-.gl{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:6px}
-select,input[type=number],input[type=time]{width:100%;font-size:16px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-family:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;color:var(--text);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.6;
+background:radial-gradient(900px 420px at 50% -80px,rgba(59,130,246,.35),transparent 70%),linear-gradient(rgba(0,229,255,.04) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,rgba(0,229,255,.04) 1px,transparent 1px) 0 0/32px 32px,var(--bg);background-attachment:fixed}
+header{padding:calc(env(safe-area-inset-top,0px) + 30px) 20px 54px;text-align:center}
+header .logo{font-size:30px;filter:drop-shadow(0 0 12px var(--a1))}
+header h1{margin:6px 0 4px;font-size:22px;letter-spacing:.12em;background:linear-gradient(90deg,#fff,var(--a1));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{margin:0;font-size:11px;letter-spacing:.2em;color:var(--a1);opacity:.85}
+main{max-width:480px;margin:-24px auto 0;padding:0 14px 24px}
+.card{position:relative;background:linear-gradient(160deg,rgba(18,28,48,.92),rgba(9,14,26,.92));border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 0 0 1px rgba(0,229,255,.04),0 10px 30px rgba(0,0,0,.5)}
+.card::before{content:"";position:absolute;left:18px;right:18px;top:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--a1),transparent);opacity:.7}
+.ttl{font-size:11px;font-weight:700;color:var(--a1);letter-spacing:.18em;margin-bottom:12px}
+label{display:block;font-size:11px;color:var(--sub);margin-bottom:6px;letter-spacing:.06em}
+.big{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:60px;font-weight:800;line-height:1;color:var(--a1);text-shadow:0 0 22px rgba(0,229,255,.55)}
+.big small{font-size:24px;color:var(--sub);text-shadow:none}
+input[type=range]{width:100%;margin:16px 0 6px;accent-color:var(--a1)}
+.gauge{position:relative;height:26px;border-radius:6px;background:#0a1322;border:1px solid var(--line);overflow:hidden}
+.gauge .goal{position:absolute;inset:0 auto 0 0;background:rgba(168,85,247,.18);border-right:2px solid var(--a3);box-shadow:4px 0 14px rgba(168,85,247,.7)}
+.gauge .cur{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--a2),var(--a1));box-shadow:0 0 18px rgba(0,229,255,.8)}
+.gauge::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 9px,#0a1322 9px 11px)}
+.gl{display:flex;justify-content:space-between;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--sub);margin-top:8px}
+.gl #gt{color:var(--a3)}
+select,input[type=number],input[type=time]{width:100%;font-size:16px;padding:12px;border-radius:10px;border:1px solid #274064;background:#070d19;color:var(--text);font-family:ui-monospace,"SF Mono",Menlo,"Hiragino Sans",monospace;outline:none}
+select:focus,input:focus{border-color:var(--a1);box-shadow:0 0 0 3px rgba(0,229,255,.18)}
 .row{display:flex;gap:10px}.row>div{flex:1}
-.gap{height:12px}
+.gap{height:14px}
 .res{text-align:center}
-.res .t{font-size:42px;font-weight:800;margin:2px 0}
-.res .note{font-size:13px;color:var(--sub)}
-.chip{display:inline-block;margin-top:8px;padding:6px 14px;border-radius:99px;background:var(--soft);color:var(--a1);font-weight:700;font-size:14px}
-.kv{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
+.res .t{font-family:ui-monospace,"SF Mono",Menlo,"Hiragino Sans",monospace;font-size:40px;font-weight:800;margin:2px 0;color:#fff;text-shadow:0 0 24px rgba(59,130,246,.9),0 0 8px rgba(0,229,255,.6)}
+.res .note{font-size:12px;color:var(--sub)}
+.chip{display:inline-block;margin-top:10px;padding:7px 16px;border-radius:99px;border:1px solid var(--a1);background:var(--soft);color:var(--a1);font-weight:700;font-size:14px;letter-spacing:.04em;box-shadow:0 0 14px rgba(0,229,255,.25)}
+.kv{display:flex;justify-content:space-between;padding:11px 0;border-top:1px solid var(--line);font-size:15px}
 .kv:first-of-type{border-top:0}
 .kv span{color:var(--sub)}
+.kv b{font-family:ui-monospace,Menlo,"Hiragino Sans",monospace;color:var(--a1)}
 .small{font-size:12px;color:var(--sub)}
 details{font-size:13px;color:var(--sub)}
 summary{cursor:pointer;font-weight:700;color:var(--text);font-size:14px}
-details h3{font-size:13px;margin:14px 0 2px;color:var(--text)}
+details h3{font-size:13px;margin:14px 0 2px;color:var(--a1)}
 details p{margin:0}
-footer{text-align:center;font-size:11px;color:var(--sub);padding:4px 20px 20px}
+footer{text-align:center;font-size:11px;color:var(--sub);padding:4px 20px 24px}
 </style>
 </head>
 <body>
 <header>
 <div class="logo">⚡</div>
 <h1>アリア充電時間計算表</h1>
-<p>NISSAN ARIYA B6 の充電時間をかんたん計算</p>
+<p>NISSAN ARIYA B6 // CHARGE CALCULATOR</p>
 </header>
 <main>
 
